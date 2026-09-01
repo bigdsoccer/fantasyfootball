@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Draft Command Center — Half-PPR - Mad Men</title>
+<title>Draft Command Center — Half-PPR</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800;900&family=Spline+Sans+Mono:wght@400;500;600&display=swap');
   :root{
@@ -275,7 +275,7 @@
   </div>
 
   <footer>
-    <b>Source:</b> Fantasy Football Calculator consensus ADP, 7,726 mock drafts (Aug 18–25, 2026), re-weighted for half-PPR + 6pt pass TDs, cross-checked vs ESPN / NFL.com / RotoBaller.<br>
+    <b>Source:</b> Fantasy Football Calculator consensus ADP + half-PPR expert rankings, re-weighted for half-PPR + 6pt pass TDs. Refreshed with injury/depth-chart news through <b>Aug 31, 2026</b> (Jeanty ankle, Washington Jr. added, Kittle/Stribling confirmed).<br>
     <b>Read me:</b> ADP shifts daily and your leaguemates aren't robots — treat this as a map, not GPS. Best available &gt; forcing a plan. Auto-save keeps your board through reloads; don't sweat a phone hiccup.<br>
     <b>Rule of thumb:</b> half-PPR + 2 flex = hoard RBs (4–5). Big-play/TD guys beat volume slot WRs. Elite QB matters more (6pt TDs + bonuses) but you can wait to rds 6–8. DEF &amp; K in the final two rounds, never sooner.
   </footer>
@@ -305,7 +305,7 @@ const POOL=[
   {n:"Chase Brown",pos:"RB",tm:"CIN",bye:6,r:13},
   {n:"Saquon Barkley",pos:"RB",tm:"PHI",bye:10,r:14},
   {n:"Justin Jefferson",pos:"WR",tm:"MIN",bye:6,r:15},
-  {n:"Ashton Jeanty",pos:"RB",tm:"LV",bye:13,r:16},
+  {n:"Ashton Jeanty",pos:"RB",tm:"LV",bye:13,r:16,note:"⚠ Ankle sprain — Wk1 TBD. Don't drop much, but grab Washington Jr. as handcuff."},
   {n:"Drake London",pos:"WR",tm:"ATL",bye:11,r:17},
   {n:"Josh Jacobs",pos:"RB",tm:"GB",bye:11,r:18,flag:"trap"},
   {n:"A.J. Brown",pos:"WR",tm:"NE",bye:11,r:19},
@@ -400,6 +400,7 @@ const POOL=[
   {n:"Trevor Lawrence",pos:"QB",tm:"JAX",bye:7,r:108},
   {n:"Caleb Williams",pos:"QB",tm:"CHI",bye:10,r:109},
   {n:"Woody Marks",pos:"RB",tm:"HOU",bye:8,r:110},
+  {n:"Mike Washington Jr.",pos:"RB",tm:"LV",bye:13,r:111,flag:"steal",note:"Jeanty handcuff w/ standalone juice — 7.3 ypc in preseason. Feature back if Jeanty sits Wk1."},
   {n:"Braelon Allen",pos:"RB",tm:"NYJ",bye:13,r:111},
   {n:"Jerry Jeudy",pos:"WR",tm:"CLE",bye:11,r:112},
   {n:"Keon Coleman",pos:"WR",tm:"BUF",bye:7,r:113},
@@ -632,11 +633,13 @@ function renderList(){
     }
     const sos=SOS_META[sosFor(p)];
     const sosDot=`<span title="${sos.lbl}" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${sos.c};margin-left:6px;vertical-align:middle"></span>`;
+    const noteLine=p.note?`<div class="sub" style="color:var(--amber);opacity:.9;margin-top:3px;white-space:normal;line-height:1.35">${p.note}</div>`:'';
     return `<div class="p ${cls}" data-name="${encodeURIComponent(p.n)}">
       <div class="rank">${p.r}</div>
       <div class="info">
         <div class="name">${p.n}${flag}${delta}</div>
         <div class="sub">${p.tm} · Bye ${p.bye}${sosDot}${stt==='mine'?' · ✓ YOURS':stt==='gone'?' · drafted':''}</div>
+        ${noteLine}
       </div>
       <div class="posbadge" style="background:${POS_COLOR[p.pos]||'var(--steel)'}">${p.pos}</div>
       <div class="act">
